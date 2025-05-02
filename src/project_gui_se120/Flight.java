@@ -1,11 +1,19 @@
 import java.util.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import project_gui_se120.City;
 public class Flight {
 
     private String flightNumber;
     private String origin;
     private String destination;
+    
+    // Extra utility instances, used and created just for Flight
+    // There is a composition relationship between City, Cities and Flight
+    // Because City and Cities were created just to be used in the Flight class. 
+    private City originCity;
+    private City destinationCity;
+    private Cities cityloader = new Cities();
     private java.util.Date departureTime;
     private java.util.Date arrivalTime;
     private java.util.ArrayList <Seat> seat = new java.util.ArrayList <> ();
@@ -16,21 +24,17 @@ public class Flight {
     
     
     public Flight(String flightNumber, String origin, String destination) {
-    
+        if (flightNumber)
         this.flightNumber = flightNumber;
         this.origin = origin;
         this.destination = destination;
         
     }
     
-    public loadValidCities() {
-        String file_path = "data.csv";
-        String line;
-        
-        
-    }
     
-    public boolean getTimings(Date departureTime, Date arrivalTime) {
+
+    
+    public boolean getTimings() {
         
         
     }
