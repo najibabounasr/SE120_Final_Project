@@ -1,3 +1,5 @@
+package project_se120;
+
 public class Passenger extends Person {
 
     private String passportNumber;

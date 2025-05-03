@@ -1,3 +1,5 @@
+package project_se120;
+
 public class Person {
 
     private String name;

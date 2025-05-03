@@ -1,7 +1,9 @@
+package project_se120;
+
 import java.util.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
-import project_gui_se120.City;
+
 public class Flight {
 
     private String flightNumber;
@@ -18,24 +20,74 @@ public class Flight {
     private java.util.Date arrivalTime;
     private java.util.ArrayList <Seat> seat = new java.util.ArrayList <> ();
     
+    // We load an Array List of all the cities, and their latitude and longitude:
+    private ArrayList<City> cities_list = cityloader.readCSV();
+    
     // This constant helps us simulate realistic flight booking. we set all flights to a maximum occupancy of 180
     private static final int TOTAL_SEATS = 180; // There are 180 seats max for each flight. This works with demand. 
     private double demand;
+    private boolean originValid;
+    private boolean destinationValid;
     
     
     public Flight(String flightNumber, String origin, String destination) {
-        if (flightNumber)
         this.flightNumber = flightNumber;
-        this.origin = origin;
         this.destination = destination;
         
+        // Validation so we see that the City, for either origin or arrival actually exist in our 
+        // csv mini-database of City names. 
+        // Note: we understand not all cities have airports but this we decided this was the most interest way to validate. 
+        // The user input for city names. 
+        for (City city : cities_list) {
+            // We use .toLowerCase so cities are not case-sensitive (better for user and tricky city names).
+            if (city.getName().toLowerCase().equals(origin.toLowerCase())){
+                this.origin = origin;
+                this.originCity = new City(city.getName(),city.getLatitude(),city.getLongitude(),city.getCapital_status());
+            }
+            if (city.getName().toLowerCase().equals(destination.toLowerCase())){ 
+                this.destination = destination;
+                this.destinationCity = new City(city.getName(), city.getLatitude(),city.getLongitude(),city.getCapital_status());
+            }
+        }
+            
+            // We throw a 'InvalifCityException' which extends a RunTimeError which is unchecked. 
+            // Because it is unchecked it is easier to throw, (no need for try catch blocks). 
+            // But also allows us to make sure an object is not created if the user inputs invalid cities. 
+            if (originValid) {
+                throw (new InvalidCityException("We apologize but we have no available flights from " + origin));
+            }
+            if (destinationValid) {
+                throw (new InvalidCityException("We apologize but we have no available flights to " + destination));
+            }
+            
+        }
+        
+        
+    
+    
+    public double getDistance() {
+        // We have to perform the 'Haversine formula' to complete the 
+        // calculation using latitude and longitude.
+        final int R = 6371;
+        
+        // Save change in lat and longitude. 
+        double change_lat = this.destinationCity.getLatitude() - this.originCity.getLatitude();
+        double change_long = this.destinationCity.getLongitude() - this.originCity.getLongitude();
+        
+        // Applying haversine formula to calculate distance:
+        double a = Math.sin(change_lat / 2) * Math.sin(change_lat / 2) +
+               Math.cos(this.originCity.getLatitude()) * Math.cos(this.destinationCity.getLatitude()) *
+               Math.sin(change_long / 2) * Math.sin(change_long / 2);
+        
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        
+        return (R * c);
     }
-    
-    
 
     
-    public boolean getTimings() {
-        
+    public void getTimings() {
+        double distance = getDistance();
+
         
     }
 
