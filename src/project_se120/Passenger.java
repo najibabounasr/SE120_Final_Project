@@ -23,12 +23,6 @@ public class Passenger extends Person {
     
         return super.getDetails();
     }
-    
-    
-
-    
-    
-  
 
     
     public boolean bookFlight(int flightId) {

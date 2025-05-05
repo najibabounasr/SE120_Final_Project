@@ -20,8 +20,7 @@ public class Flight {
     private java.util.Date departureTime;
     private java.util.Date arrivalTime;
     private FlightManager flight_manager;
-    
-    // ArrayLists:
+        // ArrayLists:
     // 1. ArrayList to store Seat objects:
     public java.util.ArrayList <Seat> seats = new java.util.ArrayList <> ();
     
@@ -70,7 +69,8 @@ public class Flight {
             if (!originValid) {
                 throw (new InvalidCityException("We apologize but we have no available flights from " + origin));
             }
-            if (!destinationValid) {
+            
+            else if (!destinationValid) {
                 throw (new InvalidCityException("We apologize but we have no available flights to " + destination));
             }
             

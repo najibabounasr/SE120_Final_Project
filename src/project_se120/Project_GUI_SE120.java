@@ -31,7 +31,7 @@ public class Project_GUI_SE120 extends Application {
         TextField passportField = new TextField(); passportField.setPromptText("Passport Number");
         TextField originField   = new TextField(); originField.setPromptText("Origin City");
         TextField destField     = new TextField(); destField.setPromptText("Destination City");
-
+        
         Label  status      = new Label();
         Button findFlights = new Button("Find Flights");
 

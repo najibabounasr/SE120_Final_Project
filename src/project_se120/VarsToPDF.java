@@ -21,12 +21,12 @@ public class VarsToPDF {
             
             PdfAcroForm form = PdfAcroForm.getAcroForm(pdfDoc, true);
             
-            String name = passenger.getName().toUpper();
-            String flight = flight.getFlightNumber();
-            String date = "25MAY";
-            String theClass = "A";
-            String origin = "NEW YORK";
-            String seat = "17C";
+            String name = passenger.getName().toUpperCase();
+            String flightNumber = String.valueOf(flight.getFlightNumber());
+            String date = String.valueOf(flight.getDepartureTime());
+            String theClass = seat.getClassType();
+            String origin = flight.getOrigin();
+            String seatNumber = seat.getSeatNumber();
             String departureGate = "B27";
             String destination = "LOS VEGAS";
             String zone = "ZONE 3";

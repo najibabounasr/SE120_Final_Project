@@ -54,7 +54,7 @@ public class MainApp {
             int flightChoice = input.nextInt();
             input.nextLine(); // consume newline
             Flight chosenFlight = flights.get(flightChoice - 1);
-
+            
             // 5. Show available seats
             ArrayList<Seat> seats = chosenFlight.seats;
             ArrayList<Seat> availableSeats = new ArrayList<>();
