@@ -24,40 +24,40 @@ public class City {
         this.latitude = Math.toRadians(latitude);
         this.capital_status = capital_status;
     }
-
-    public String getCapital_status() {
+    
+    public String getCapitalStatus() {
         return capital_status;
     }
 
-    public void setCapital_status(String capital_status) {
+    public void setCapitalStatus(String capital_status) {
         this.capital_status = capital_status;
     }
-
+    
     @Override
     public String toString() {
         return "City{" + "name=" + name + ", longitude=" + longitude + ", latitude=" + latitude + ", capital status=" + capital_status + '}';
     }
-
+    
     public String getName() {
         return name;
     }
-
+    
     public void setName(String name) {
         this.name = name;
     }
-
+    
     public double getLongitude() {
         return longitude;
     }
-
+    
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
-
+    
     public double getLatitude() {
         return latitude;
     }
-
+    
     public void setLatitude(double latitude) {
         this.latitude = latitude;
     }

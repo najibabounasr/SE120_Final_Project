@@ -56,7 +56,7 @@ public class Cities {
             // any of the strings. 
             // We know also know that index 0 stores the name in ascii. 
             if (indexes.length > 3) {
-            name = indexes[1].trim();
+            name = indexes[0].trim();
             latitude = Double.parseDouble(indexes[2].replace("\"", "").trim());
             longitude = Double.parseDouble(indexes[3].replace("\"", "").trim()); // Using wrapper classes are the easiest way to convert String--> primitive type. 
             capital_status = indexes[8];
@@ -78,11 +78,18 @@ public class Cities {
     public static void main(String[] args) {
     Cities cities = new Cities();
     ArrayList<City> cities_list = cities.readCSV();
-    for (int i = 0; i<500; ++i) {
-    System.out.println(cities_list.get(i)); 
+    for (int i = 0; i<4000; ++i) {
+    System.out.println(cities_list.get(i));  // This works
+   
     }
-}
-}
+    }
+       
+    
+    
+
+    } 
+
+
 
 
     

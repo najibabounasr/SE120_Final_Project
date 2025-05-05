@@ -16,51 +16,125 @@ public class Flight {
     private City originCity;
     private City destinationCity;
     private Cities cityloader = new Cities();
+    private Seats seat_loader = new Seats();
     private java.util.Date departureTime;
     private java.util.Date arrivalTime;
-    private java.util.ArrayList <Seat> seat = new java.util.ArrayList <> ();
+    private FlightManager flight_manager;
     
+    // ArrayLists:
+    // 1. ArrayList to store Seat objects:
+    public java.util.ArrayList <Seat> seats = new java.util.ArrayList <> ();
+    
+    // 2. ArrayList to store City objects:
     // We load an Array List of all the cities, and their latitude and longitude:
     private ArrayList<City> cities_list = cityloader.readCSV();
     
+    // 3. ArrayList to store Flight Objects:
+//    private ArrayList<Flight> flights_list = new ArrayList<>(); // Moved to 'Airline'
     // This constant helps us simulate realistic flight booking. we set all flights to a maximum occupancy of 180
     private static final int TOTAL_SEATS = 180; // There are 180 seats max for each flight. This works with demand. 
     private double demand;
+    private double distance;
     private boolean originValid;
     private boolean destinationValid;
     
     
-    public Flight(String flightNumber, String origin, String destination) {
+    public Flight(String flightNumber, String origin, String destination, Date departureTime, Date arrivalTime, FlightManager flight_manager) {
         this.flightNumber = flightNumber;
-        this.destination = destination;
-        
+        this.origin = origin;
+        this.destination = destination;  
+        this.departureTime = departureTime;
+        this.arrivalTime = arrivalTime;
+        this.flight_manager = flight_manager;
         // Validation so we see that the City, for either origin or arrival actually exist in our 
         // csv mini-database of City names. 
         // Note: we understand not all cities have airports but this we decided this was the most interest way to validate. 
         // The user input for city names. 
+        // NOTE: WE CAN DO BINARY SEARCH HERE:
         for (City city : cities_list) {
             // We use .toLowerCase so cities are not case-sensitive (better for user and tricky city names).
-            if (city.getName().toLowerCase().equals(origin.toLowerCase())){
+            if (city.getName().trim().replace("\"", "").equalsIgnoreCase(origin.trim().replace("\"", ""))){
                 this.origin = origin;
-                this.originCity = new City(city.getName(),city.getLatitude(),city.getLongitude(),city.getCapital_status());
+                this.originCity = new City(city.getName(),city.getLatitude(),city.getLongitude(),city.getCapitalStatus());
+                originValid = true;
             }
-            if (city.getName().toLowerCase().equals(destination.toLowerCase())){ 
+            if (city.getName().trim().replace("\"", "").equalsIgnoreCase(destination.trim().replace("\"", ""))){ 
                 this.destination = destination;
-                this.destinationCity = new City(city.getName(), city.getLatitude(),city.getLongitude(),city.getCapital_status());
+                this.destinationCity = new City(city.getName(), city.getLatitude(),city.getLongitude(),city.getCapitalStatus());
+                 destinationValid = true;
             }
         }
-            
             // We throw a 'InvalifCityException' which extends a RunTimeError which is unchecked. 
             // Because it is unchecked it is easier to throw, (no need for try catch blocks). 
             // But also allows us to make sure an object is not created if the user inputs invalid cities. 
-            if (originValid) {
+            if (!originValid) {
                 throw (new InvalidCityException("We apologize but we have no available flights from " + origin));
             }
-            if (destinationValid) {
+            if (!destinationValid) {
                 throw (new InvalidCityException("We apologize but we have no available flights to " + destination));
             }
             
+            this.seats = seat_loader.createSeats(this);
+            seat_loader.occupySeats(this.seats, this.departureTime, flight_manager.getDemand(this.departureTime));
+            
+            int available = seat_loader.getAvailableSeats(this.seats);
+            for (Seat seat : this.seats) {
+                seat.calculateSeatPrice(available, seat.getClassType());
+            }
+            
+            
         }
+
+    @Override
+    public String toString() {
+        return (". Flight: " + this.flightNumber +
+                    " | Departure: " + this.departureTime +
+                    " | Arrival: " + this.arrivalTime +
+                    " | From: " + this.origin +
+                    " | To: " + this.destination);
+    }
+
+    public String getFlightNumber() {
+        return flightNumber;
+    }
+
+    public void setFlightNumber(String flightNumber) {
+        this.flightNumber = flightNumber;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
+    public City getDestinationCity() {
+        return destinationCity;
+    }
+
+    public void setDestinationCity(City destinationCity) {
+        this.destinationCity = destinationCity;
+    }
+
+    public Date getDepartureTime() {
+        return departureTime;
+    }
+
+    public void setDepartureTime(Date departureTime) {
+        this.departureTime = departureTime;
+    }
+
+    public Date getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public void setArrivalTime(Date arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
+    
+    
         
         
     
@@ -81,85 +155,42 @@ public class Flight {
         
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         
+        this.distance = R *c;
         return (R * c);
     }
-
+   
     
-    public void getTimings() {
-        double distance = getDistance();
-
-        
+    public void getTimings(ArrayList<Flight> flights_list) {
+        int counter = 0;
+        for (Flight flight : flights_list) {
+            // Output:
+            System.out.println((counter +1) + flight.toString());
+            ++counter; }
     }
+    
 
     
+
     public boolean checkAvailability() {     
-    
+        // Tell user if flight is available (has seats)
         return true;
-    }
-    
-    // Simulates real-life demand using Math.random() and flight timing.  
-    private double getDemand(java.util.Date date) {
-        // we have hour and day coefficients, to adjust number of seats based on time of week 
-        // and time of day. This simulates demand. Because certain times of the week have more demand than others. 
-        double hour_coefficient = 0, day_coefficient = 0;
-        // We use calendar to easily access the date object's contents and use it 
-        // to simulate demand for flights. 
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(departureTime);
-        // we set coefficients. based on travel time within the day.
-        int day_of_week = calendar.get(Calendar.HOUR_OF_DAY);
-        if (day_of_week < 3) {
-            hour_coefficient = 0.4;
-        }
-        else if (day_of_week < 6) {
-        hour_coefficient = 0.3;
-    }
-        else if (day_of_week < 9) {
-            hour_coefficient = 0.9;
-        }
-        else if (day_of_week < 12) {
-            hour_coefficient = 0.7;
-        }
-        else if (day_of_week < 15) {
-            hour_coefficient = 1.0;
-        }
-        else if (day_of_week < 18) {
-            hour_coefficient = 1.2; }
-        else if (day_of_week < 21) {
-            hour_coefficient = 1.5; }
-        else if (day_of_week < 24) {
-            hour_coefficient = 1.5; 
-        }
-        // We also set coefficients for day of week:
-        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-
-        switch (dayOfWeek) {
-            case Calendar.SUNDAY:
-                day_coefficient = 0.8;
-                break;
-            case Calendar.MONDAY:
-                day_coefficient = 0.6;
-                break;
-            case Calendar.TUESDAY:
-                day_coefficient = 0.7;
-                break;
-            case Calendar.WEDNESDAY:
-                day_coefficient = 0.9;
-                break;
-            case Calendar.THURSDAY:
-                day_coefficient = 1.2;
-                break;
-            case Calendar.FRIDAY:
-                day_coefficient = 1.5;
-                break;
-            case Calendar.SATURDAY:
-                day_coefficient = 1.1;
-                break;
-            default:
-                break;
-        }
         
-        return (hour_coefficient * day_coefficient * Math.random());
+    }
+
+    public City getOriginCity() {
+        return originCity;
+    }
+
+    public String getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(String origin) {
+        this.origin = origin;
+    }
+
+    public void setOriginCity(City originCity) {
+        this.originCity = originCity;
     }
         
     
@@ -168,10 +199,12 @@ public class Flight {
         if (checkAvailability()) {
         
             for (int i = 0; i <= (int)((Math.random() * 2) + 3); i++) {};
+            return "Flight " + flightNumber + " is available.";
             
         }
+        else 
         
-        return "";
+        return "Flight not available.";
     }
     
 }

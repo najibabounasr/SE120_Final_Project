@@ -33,6 +33,7 @@ public class Passenger extends Person {
     
     public boolean bookFlight(int flightId) {
         
+        System.out.println("Booking flight " + flightId);
         return true;     
     }
     
