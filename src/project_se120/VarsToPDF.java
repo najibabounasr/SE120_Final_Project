@@ -1,3 +1,4 @@
+package project_se120;
 import com.itextpdf.forms.PdfAcroForm;
 import com.itextpdf.forms.fields.PdfFormField;
 import com.itextpdf.kernel.colors.ColorConstants;
@@ -8,7 +9,7 @@ import java.io.IOException;
 import java.util.Map;
 
 public class VarsToPDF {
-    public static void main(String[] args) {
+    public static void varsToPDF(Passenger passenger, Flight flight, Seat seat) {
         String templatePath = "src/resources/BoardingPassTemplateReal.pdf";
         String outputPath = "src/output/outputPLACEHOLDERS.pdf";
         
@@ -20,8 +21,8 @@ public class VarsToPDF {
             
             PdfAcroForm form = PdfAcroForm.getAcroForm(pdfDoc, true);
             
-            String name = "AHMAD AYMAN";
-            String flight = "BH0112";
+            String name = passenger.getName().toUpper();
+            String flight = flight.getFlightNumber();
             String date = "25MAY";
             String theClass = "A";
             String origin = "NEW YORK";

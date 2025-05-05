@@ -87,5 +87,13 @@ public class Seat {
         availability = (double)((1.5-(Math.random()/4)) - seats_available / 180);
         this.price = Math.round(base_coefficient * availability);
     }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
     
 }

@@ -2,6 +2,8 @@ package project_se120;
 
 import java.util.*;
 
+
+// Note: we have to rewrite all of this.
 public class MainApp {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
