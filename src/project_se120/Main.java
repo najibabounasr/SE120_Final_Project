@@ -44,14 +44,14 @@ public class Main {
         System.out.println("Enter the destination city: ");
         destination = input.nextLine();
         
-        Flight flight = new Flight("DUMMY", origin, destination, new Date(), new Date(), flight_manager);
+        Flight flight = new Flight("DUMMY", origin, destination, new Date(), new Date(), flightmanager);
         
         flights = flightmanager.findTimings(flight);
         int i =0;
         System.out.println("||Please select a flight number from those listed on the left||\n");
         for (Flight f : flights) {
             System.out.print(++i);
-            System.out.println(".Flight: " + flight.getFlightNumber() + "|| From:  " + flight.getOriginCity() + "|| To: " + flight.getDestination() +"|| Arrival Time: " + flight.getArrivalTime() + "|| Destination Time: " + flight.getDepartureTime());
+            System.out.println(f.toString());
         }
         int flightIndex;
         double demand = flightmanager.getDemand(flight.getDepartureTime());
@@ -59,15 +59,14 @@ public class Main {
         do {
         System.out.print("Enter Flight Number: ");
         flightIndex = input.nextInt();
-        seats = seat_loader.createSeats(flights.get(flightIndex+1), flights.get(flightIndex+1).getDepartureTime(), demand);
-        seat_loader.occupySeats(seats,flights.get(flightIndex+1).getDepartureTime(), demand);
-        
-        if (seat_loader.getAvailableSeats(seats) == 0) {
+        seats = seat_loader.createSeats(flights.get(flightIndex-1));
+        seat_loader.occupySeats(seats,flights.get(flightIndex-1).getDepartureTime(), demand);
+        System.out.println("Available seats: "+ seat_loader.getAvailableSeats(seats));
+        if (seat_loader.getAvailableSeats(seats) <= 0) {
             System.out.println("Sorry, the flight you selected has no available seats.\n");
         }
         }
-        while ((seat_loader.getAvailableSeats(seats)) == 0) ;
-        System.out.println("Sorry, the flight you selected has no available seats.\n");
+        while ((seat_loader.getAvailableSeats(seats)) <= 0) ;
         
     
      
