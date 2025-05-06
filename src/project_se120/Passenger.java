@@ -1,9 +1,10 @@
 package project_se120;
 
+import java.util.*;
 public class Passenger extends Person {
 
     private String passportNumber;
-    private java.util.ArrayList <Reservation> reservation = new java.util.ArrayList<> ();
+    private ArrayList<Reservation> reservation =  new ArrayList<>();
     
     
     public Passenger() {
@@ -13,6 +14,11 @@ public class Passenger extends Person {
     
         super(name, email);
         this.passportNumber = passportNumber;   
+    }
+
+    @Override
+    public String toString() {
+        return "Name: " + super.getName() + ", Email: " + super.getEmail() + ", Passport Number: " + passportNumber;
     }
     
     

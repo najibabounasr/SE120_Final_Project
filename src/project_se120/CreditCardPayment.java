@@ -13,7 +13,7 @@ public class CreditCardPayment implements Payment {
         while(isTrue) {
         // 
         if ((!(this.cardNumber.length() == 16)) || (!this.cardNumber.matches("\\d+"))) {
-            throw new IllegalArgumentException("Invalid card number! Please enter a valid cred-card number:");
+            throw new InvalidCreditCardException("Invalid card number. Please re-enter a valid credit card number:");
         }
         else {
                 System.out.println("Credit card information saved succesfuly. ");
@@ -27,15 +27,17 @@ public class CreditCardPayment implements Payment {
     @Override
     public boolean processPayment(double amount) {
             if (amount <= this.SPENDING_LIMIT){
-                System.out.println("Payment Accepted.\nAmmount: " + amount + "\nFor card ending with: " + cardNumber.substring(12));
+                System.out.println("Payment Accepted.\nAmount: " + amount + "\nFor card ending with: " + cardNumber.substring(12));
                 return (true);
                 
             }
             else {
-               System.out.println("Payment cannot be accepted. Ammount of " + amount + " is above your current limit of $" + SPENDING_LIMIT);
+               System.out.println("Payment cannot be accepted. Amount of " + amount + " is above your current limit of $" + SPENDING_LIMIT);
                 return (false);
             }
         
     }
+    
+
     
 }

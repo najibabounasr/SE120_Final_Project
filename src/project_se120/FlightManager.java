@@ -73,8 +73,8 @@ public class FlightManager{
              base_calendar.add(Calendar.MINUTE, 0);
              base_calendar.add(Calendar.SECOND, 0);
              base_calendar.set(Calendar.MILLISECOND, 0);
-       System.out.println("Note: All flight timings are in Greenwich Standard Time (GMT)");
-       System.out.println("Please select flight number from the left.");
+       System.out.println("\nNote: All flight timings are in Greenwich Standard Time (GMT)");
+       System.out.println("||Please select a flight number from those listed on the left||");
        for (int day = 0; day < 7; ++day) {
          for (int i = 0; i <flightsPerDay; ++i) {
              // Create a fresh character object. 

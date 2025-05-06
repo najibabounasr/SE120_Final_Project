@@ -7,7 +7,8 @@ public class Reservation{
     private int reservationId;
     private java.util.Date bookingDate;
     private Passenger passenger;
-
+    private Seat seat;
+    
     public int getReservationId() {
         return reservationId;
     }
@@ -32,6 +33,14 @@ public class Reservation{
         this.passenger = passenger;
     }
 
+    public Seat getSeat() {
+        return seat;
+    }
+
+    public void setSeat(Seat seat) {
+        this.seat = seat;
+    }
+
     public Flight getFlight() {
         return flight;
     }
@@ -52,7 +61,20 @@ public class Reservation{
     private Payment payment;
     
     
-    public Reservation(int reservationId, java.util.Date bookingDate) {
+    // We use this constructor to avoid redundant calls to other set methods.
+    public Reservation(int reservationId, java.util.Date bookingDate, Flight flight, Passenger passenger, Seat seat) {
+    
+        this.reservationId = reservationId;
+        this.bookingDate = bookingDate;
+        this.flight = flight;
+        this.passenger = passenger;
+        this.seat = seat;
+        
+        
+    }
+    
+    // This was the original constructor Dr. Sarra showed in the UML (still exists):
+        public Reservation(int reservationId, java.util.Date bookingDate) {
     
         this.reservationId = reservationId;
         this.bookingDate = bookingDate;
@@ -63,9 +85,17 @@ public class Reservation{
     
     public String getReservationDetails() {
         
-        return "Reservation ID: " + reservationId + "\n" + passenger.getDetails() +"\nBooking Date: " + bookingDate + "\n " + flight;
+        return "|Reservation Details|\nReservation ID: " + reservationId + "\n" + passenger.getDetails() +"\nBooking Date: " + bookingDate + "\n Passenger" + passenger.toString()+ "\n\nFlight: " + flight.toString() + "\nSeat: " + seat.toString() ;
     }
     
+    public static int generateReservationId() {
+        return (int) (100000- (Math.random() * 10000));
+    }
+
+    @Override
+    public String toString() {
+        return "Reservation ID: " + reservationId + "\nBooking Date: " + bookingDate + "\n" + passenger + "\n" + seat + "\n" + flight;
+    }
     
 
     
