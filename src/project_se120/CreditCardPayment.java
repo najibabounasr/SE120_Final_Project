@@ -11,6 +11,7 @@ public class CreditCardPayment implements Payment {
         this.cardNumber = cardNumber;
         boolean isTrue = true;
         while(isTrue) {
+        // 
         if ((!(this.cardNumber.length() == 16)) || (!this.cardNumber.matches("\\d+"))) {
             throw new IllegalArgumentException("Invalid card number! Please enter a valid cred-card number:");
         }

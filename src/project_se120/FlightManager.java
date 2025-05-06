@@ -100,7 +100,7 @@ public class FlightManager{
              arrivalTime = calendar.getTime();
              demand = getDemand(departureTime);
              
-             if (Math.random() < (demand )) {
+             if (Math.random() < (demand)) {
                  // There may be duplicate flight numbers, though this is unlikely and 
                  // is therefore not handled. 
                  flightNumber = generateFlightNumber();

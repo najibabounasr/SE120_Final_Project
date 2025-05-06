@@ -69,7 +69,6 @@ public class Flight {
             if (!originValid) {
                 throw (new InvalidCityException("We apologize but we have no available flights from " + origin));
             }
-            
             else if (!destinationValid) {
                 throw (new InvalidCityException("We apologize but we have no available flights to " + destination));
             }
