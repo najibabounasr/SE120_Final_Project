@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.Map;
 
 abstract interface BoardingPassGenerator {
-    void varsToPDF(Reservation reservation) ;
-        
+
+    void varsToPDF(Reservation reservation);
+
 }
