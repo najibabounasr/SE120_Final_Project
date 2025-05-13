@@ -54,3 +54,42 @@ This Java-based airline reservation system simulates real-world booking, seat se
 
 ## 📂 File Structure
 
+src/
+├── Test.java # Main CLI logic
+├── Flight.java # Flight object
+├── FlightManager.java # Demand, flight generation logic
+├── Seats.java # Seat creation & booking simulation
+├── Employee.java # Boarding logic and PDF generation
+├── Passenger.java # Passenger object
+├── Seat.java # Seat object
+└── Reservation.java # Reservation details
+
+---
+
+## 🔧 Requirements
+
+- Java 8+
+- iTextPDF library (for PDF generation)
+- A template file `BoardingPassTemplateReal.pdf` located in `src/resources/`
+
+---
+
+## 📌 Notes
+
+- Cities and capital status are loaded from a CSV (`worldcities.csv`)
+- Boarding passes are saved in `/src/output/`
+- This system is modular: easily extendable for GUI, databases, or web APIs
+
+---
+
+## 🛫 Sample Improvements (Future Ideas)
+
+- Add hub-based coefficient logic (e.g., Dubai, Heathrow get special boost)
+- Save flight history and bookings to files or database
+- Add GUI interface or web layer
+- Simulate round trips and baggage options
+
+---
+
+> Developed as part of SE 120 final project at Alfaisal University. 🎓
+
