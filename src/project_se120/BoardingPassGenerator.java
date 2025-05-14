@@ -8,7 +8,8 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import java.io.IOException;
 import java.util.Map;
 
-abstract interface BoardingPassGenerator {
+
+interface BoardingPassGenerator {
 
     void varsToPDF(Reservation reservation);
 
